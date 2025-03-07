@@ -1,0 +1,44 @@
+use std::io;
+
+// Function to calculate the Greatest Common Divisor (GCD) of two numbers
+fn gcd(a: i32, b: i32) -> i32 {
+    if b == 0 {
+        return a;
+    }
+    gcd(b, a % b)
+}
+
+// Function to calculate the Least Common Multiple (LCM) of two numbers
+fn lcm(a: i32, b: i32) -> i32 {
+    (a * b).abs() / gcd(a, b)
+}
+
+// Function to calculate LCM and HCF for a list of numbers
+fn calculate_lcm_hcf(numbers: Vec<i32>) -> (i32, i32) {
+    let mut hcf = numbers[0];
+    let mut lcm = numbers[0];
+
+    for &num in &numbers[1..] {
+        hcf = gcd(hcf, num);
+        lcm = lcm(lcm, num);
+    }
+
+    (lcm, hcf)
+}
+
+fn main() {
+    let mut numbers = Vec::new();
+    println!("Please enter 5 numbers:");
+
+    for _ in 0..5 {
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).expect("Failed to read line");
+        let num: i32 = input.trim().parse().expect("Please enter a valid number");
+        numbers.push(num);
+    }
+
+    let (lcm_result, hcf_result) = calculate_lcm_hcf(numbers);
+
+    println!("The Least Common Multiple (LCM) of the numbers is: {}", lcm_result);
+    println!("The Highest Common Factor (HCF) of the numbers is: {}", hcf_result);
+}
